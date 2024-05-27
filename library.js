@@ -30,6 +30,8 @@ function addBookToLibrary(Book){
 
 const form = document.querySelector('form');
 const container = document.querySelector('.container');
+const bookCard = document.createElement('div')
+bookCard.setAttribute('class','book-card')
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -45,23 +47,27 @@ form.addEventListener('submit', (e) => {
    
 function displayCard() {
         myLibrary.forEach(item => {
-        const bookCard = document.createElement('div')
-        bookCard.setAttribute('class','book-card')
-        const title = document.createElement('div')
-        const author = document.createElement('div')
-        const pages = document.createElement('div')
-        const read = document.createElement('div')
+        const title = document.createElement('div');
+        const author = document.createElement('div');
+        const pages = document.createElement('div');
+        const read = document.createElement('div');
+        const deleteBtn = document.createElement('button');
 
-        title.textContent = item.title
-        author.textContent = item.author
-        pages.textContent = item.pages
-        read.textContent = item.read
+        deleteBtn.addEventListener('click', () => container.removeChild(bookCard));
+
+
+        title.textContent = item.title;
+        author.textContent = item.author;
+        pages.textContent = item.pages;
+        read.textContent = item.read;
+        deleteBtn.textContent = "Remove";
     
         container.appendChild(bookCard)
         bookCard.appendChild(title)
         bookCard.appendChild(author)
         bookCard.appendChild(pages)
         bookCard.appendChild(read)
+        bookCard.appendChild(deleteBtn);
         })
 }
 
