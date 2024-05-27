@@ -1,23 +1,22 @@
 let myLibrary = [];
 
 
-function Book(title, author, pages, read, index){
+function Book(title, author, pages, isRead){
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = read;
-    this.index = index;
+    this.isRead = isRead;
+
+    function toggleRead(){
+       this.isRead = !this.isRead;
     }
 
-function UserBook(index){
-    this.index = index;
-
-}
-
-function addBookToLibrary(Book){
-    if(Book){
-    myLibrary.push(Book);
     }
+
+function addBookToLibrary(title, author, pages, isRead){
+    let newBook = new Book(title, author, pages, isRead);
+    myLibrary.push(newBook);
+    displayCards();
 }
 
 // const book1 = new Book('Hobbit', 'J.R.R.Tolkien', 345, 'read');
@@ -29,49 +28,58 @@ function addBookToLibrary(Book){
 // addBookToLibrary(book3);
 
 const form = document.querySelector('form');
-const container = document.querySelector('.container');
-const bookCard = document.createElement('div')
-bookCard.setAttribute('class','book-card')
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const fd = new FormData(form);
-    const fb = Object.fromEntries(fd);
-    addBookToLibrary(fb);
+    let title = document.querySelector('input[name=title]').value;
+    let author = document.querySelector('input[name=author]').value;
+    let pages = document.querySelector('input[name=pages]').value;
+    let isRead = document.querySelector('input[name=read]').value;
+
+    addBookToLibrary(title, author, pages, isRead);
     console.log(myLibrary);
-    displayCard();
-    clearForm(form);
-    myLibrary = [];
+    form.reset();
 });
    
-function displayCard() {
-        myLibrary.forEach(item => {
-        const title = document.createElement('div');
-        const author = document.createElement('div');
-        const pages = document.createElement('div');
-        const read = document.createElement('div');
-        const deleteBtn = document.createElement('button');
+function displayCards() {
+        
+        let container = document.querySelector('.container'); 
+        container.innerHTML = '';
+  
+        
+        myLibrary.forEach((item) => {
 
-        deleteBtn.addEventListener('click', () => container.removeChild(bookCard));
+        let bookCard = document.createElement('div');
+        bookCard.setAttribute('class','book-card');
 
-
+        let title = document.createElement('div');
         title.textContent = item.title;
-        author.textContent = item.author;
-        pages.textContent = item.pages;
-        read.textContent = item.read;
-        deleteBtn.textContent = "Remove";
-    
-        container.appendChild(bookCard)
-        bookCard.appendChild(title)
-        bookCard.appendChild(author)
-        bookCard.appendChild(pages)
-        bookCard.appendChild(read)
-        bookCard.appendChild(deleteBtn);
-        })
-}
+        bookCard.appendChild(title);
 
-function clearForm(form){
-    const inputs = form.querySelectorAll('input');
-    inputs.forEach(input => input.value = '');
-};
+        let author = document.createElement('div');
+        author.textContent = item.author;
+        bookCard.appendChild(author);
+
+        let pages = document.createElement('div');
+        pages.textContent = item.pages;
+        bookCard.appendChild(pages);
+
+        let read = document.createElement('div');
+        read.textContent = item.read;
+        bookCard.appendChild(read);
+
+
+        let deleteBtn = document.createElement('button');
+        // deleteBtn.addEventListener('click', () => container.removeChild(bookCard));
+        deleteBtn.textContent = "Remove";
+        bookCard.appendChild(deleteBtn);
+        container.appendChild(bookCard);
+        })
+   
+    }
+
+// function clearForm(form){
+//     const inputs = form.querySelectorAll('input');
+//     inputs.forEach(input => input.value = '');
+// };
