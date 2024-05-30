@@ -1,16 +1,14 @@
 let myLibrary = [];
 
 
-function Book(title, author, pages, isRead){
+function Book (title, author, pages, isRead){
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.isRead = isRead;
-
-    function toggleRead(){
-       this.isRead = !this.isRead;
-    }
-
+    this.toggleRead = function(){
+       this.isRead = this.isRead === true ? false : true;
+    };
     }
 
 function addBookToLibrary(title, author, pages, isRead){
@@ -19,13 +17,9 @@ function addBookToLibrary(title, author, pages, isRead){
     displayCards();
 }
 
-// const book1 = new Book('Hobbit', 'J.R.R.Tolkien', 345, 'read');
-// const book2 = new Book('Big Little Lies', 'L.Moriarty', 456, 'not read yet');
-// const book3 = new Book('Nightingale', 'K.Hannah', 434, 'read');
-
-// addBookToLibrary(book1);
-// addBookToLibrary(book2);
-// addBookToLibrary(book3);
+addBookToLibrary('Hobbit', 'J.R.R.Tolkien', 345, 'read');
+addBookToLibrary('Big Little Lies', 'L.Moriarty', 456, 'not read yet');
+addBookToLibrary('Nightingale', 'K.Hannah', 434, 'read');
 
 const form = document.querySelector('form');
 
@@ -48,7 +42,7 @@ function displayCards() {
         container.innerHTML = '';
   
         
-        myLibrary.forEach((item) => {
+        myLibrary.forEach((item, index) => {
 
         let bookCard = document.createElement('div');
         bookCard.setAttribute('class','book-card');
@@ -66,14 +60,27 @@ function displayCards() {
         bookCard.appendChild(pages);
 
         let read = document.createElement('div');
-        read.textContent = item.read;
+        read.textContent = item.isRead === true ? 'Read' : 'Not read';
         bookCard.appendChild(read);
 
 
+        let toggleBtn = document.createElement('button');
+        toggleBtn.textContent = "Set status";
+        toggleBtn.addEventListener('click', () => {
+            item.toggleRead();
+            displayCards();
+        });
+        bookCard.appendChild(toggleBtn);
+
+
         let deleteBtn = document.createElement('button');
-        // deleteBtn.addEventListener('click', () => container.removeChild(bookCard));
         deleteBtn.textContent = "Remove";
+        deleteBtn.addEventListener('click', () => {
+            myLibrary.splice(index, 1);
+            displayCards();
+        });
         bookCard.appendChild(deleteBtn);
+        
         container.appendChild(bookCard);
         })
    
